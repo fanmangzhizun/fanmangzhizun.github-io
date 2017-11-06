@@ -79,16 +79,19 @@
 
 
 
-<meta name="description" content="HelloThis is the first blog to write.">
+<meta name="description" content="Map中讲讲HashMap引言 HashMap 作为一种较为常用的容器，此文通过对于源码解读的方式来思考如何对于HashMap进行优化以及HashMap为何是线程不安全的 HashMap作为Map的一种实现，下图展示Map的多种实现 HashMap：HashMap将根据Key的hashcode值进行对应位置的value存储，这就很很好的说明HashMap为何不能按照插入顺序进行查找，HashMap">
 <meta property="og:type" content="article">
-<meta property="og:title" content="first blog">
-<meta property="og:url" content="http://yoursite.com/2017/11/05/first/index.html">
+<meta property="og:title" content="细谈Map中的HashMap">
+<meta property="og:url" content="http://yoursite.com/2017/11/06/Map中讲讲HashMap/index.html">
 <meta property="og:site_name" content="WingFlight&#39;s blog">
-<meta property="og:description" content="HelloThis is the first blog to write.">
-<meta property="og:updated_time" content="2017-11-05T10:30:29.996Z">
+<meta property="og:description" content="Map中讲讲HashMap引言 HashMap 作为一种较为常用的容器，此文通过对于源码解读的方式来思考如何对于HashMap进行优化以及HashMap为何是线程不安全的 HashMap作为Map的一种实现，下图展示Map的多种实现 HashMap：HashMap将根据Key的hashcode值进行对应位置的value存储，这就很很好的说明HashMap为何不能按照插入顺序进行查找，HashMap">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7853175-d6189aadab8004d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/7853175-1b3908dd171372ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-11-06T03:06:00.802Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="first blog">
-<meta name="twitter:description" content="HelloThis is the first blog to write.">
+<meta name="twitter:title" content="细谈Map中的HashMap">
+<meta name="twitter:description" content="Map中讲讲HashMap引言 HashMap 作为一种较为常用的容器，此文通过对于源码解读的方式来思考如何对于HashMap进行优化以及HashMap为何是线程不安全的 HashMap作为Map的一种实现，下图展示Map的多种实现 HashMap：HashMap将根据Key的hashcode值进行对应位置的value存储，这就很很好的说明HashMap为何不能按照插入顺序进行查找，HashMap">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/7853175-d6189aadab8004d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -118,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/05/first/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/06/Map中讲讲HashMap/"/>
 
 
 
 
 
-  <title>first blog | WingFlight's blog</title>
+  <title>细谈Map中的HashMap | WingFlight's blog</title>
   
 
 
@@ -231,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/05/first/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/06/Map中讲讲HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="WingFlight">
@@ -248,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">first blog</h1>
+          <h1 class="post-title" itemprop="name headline">细谈Map中的HashMap</h1>
         
 
         <div class="post-meta">
@@ -260,8 +263,8 @@
               
                 <span class="post-meta-item-text">Veröffentlicht am</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-05T18:28:19+08:00">
-                2017-11-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-06T11:05:30+08:00">
+                2017-11-06
               </time>
             
 
@@ -298,7 +301,18 @@
       
 
       
-        <h1 id="Hello"><a href="#Hello" class="headerlink" title="Hello"></a>Hello</h1><p>This is the first <strong>blog</strong> to write.</p>
+        <h1 id="Map中讲讲HashMap"><a href="#Map中讲讲HashMap" class="headerlink" title="Map中讲讲HashMap"></a>Map中讲讲HashMap</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><ul>
+<li><strong>HashMap</strong> 作为一种较为常用的<k,v>容器，此文通过对于源码解读的方式来思考如何对于<strong>HashMap</strong>进行优化以及<strong>HashMap</strong>为何是线程不安全的<ul>
+<li><strong>HashMap</strong>作为Map的一种实现，下图展示<strong>Map</strong>的多种实现<br><img src="http://upload-images.jianshu.io/upload_images/7853175-d6189aadab8004d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></li>
+<li><strong>HashMap</strong>：HashMap将根据Key的hashcode值进行对应位置的value存储，这就很很好的说明HashMap为何不能按照插入顺序进行查找，HashMap允许key为null，但是只能允许一个Key为null,由于线程不安全，并发环境时应选择<strong>ConcurrentHashMap</strong></li>
+<li><strong>LinkedHashMap</strong>: LinkedHashMap是HashMap的子类，记录着插入时的顺序</li>
+<li><strong>TreeMap</strong>:TreeMap实现了SortedMap的接口，对于插入的记录进行排序，遍历TreeMap得到的是经过排序的记录<h2 id="HashMap内部结构"><a href="#HashMap内部结构" class="headerlink" title="HashMap内部结构"></a>HashMap内部结构</h2></li>
+<li>通过查看源码的方式可以看出使用了三种存储方式，数组+链表+红黑树<br><img src="http://upload-images.jianshu.io/upload_images/7853175-1b3908dd171372ea.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></li>
+<li>使用hash方法不可避免会产生哈希冲突，hashMap使用链地址的方式进行处理，当链表长度较大时使用红黑树降低时间复杂度O(lgN)</li>
+<li>来看下hashMap的结点数据结构<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; <span class="keyword">implements</span> <span class="title">Map</span>.<span class="title">Entry</span>&lt;<span class="title">K</span>,<span class="title">V</span>&gt; </span>&#123;</div><div class="line">        <span class="keyword">final</span> <span class="keyword">int</span> hash;</div><div class="line">        <span class="keyword">final</span> K key;</div><div class="line">        V value;</div><div class="line">        Node&lt;K,V&gt; next;</div><div class="line"></div><div class="line">        Node(<span class="keyword">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</div><div class="line">            <span class="keyword">this</span>.hash = hash;</div><div class="line">            <span class="keyword">this</span>.key = key;</div><div class="line">            <span class="keyword">this</span>.value = value;</div><div class="line">            <span class="keyword">this</span>.next = next;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> K <span class="title">getKey</span><span class="params">()</span>        </span>&#123; <span class="keyword">return</span> key; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">getValue</span><span class="params">()</span>      </span>&#123; <span class="keyword">return</span> value; &#125;</div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> key + <span class="string">"="</span> + value; &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">return</span> Objects.hashCode(key) ^ Objects.hashCode(value);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> V <span class="title">setValue</span><span class="params">(V newValue)</span> </span>&#123;</div><div class="line">            V oldValue = value;</div><div class="line">            value = newValue;</div><div class="line">            <span class="keyword">return</span> oldValue;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">            <span class="keyword">if</span> (o == <span class="keyword">this</span>)</div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            <span class="keyword">if</span> (o <span class="keyword">instanceof</span> Map.Entry) &#123;</div><div class="line">                Map.Entry&lt;?,?&gt; e = (Map.Entry&lt;?,?&gt;)o;</div><div class="line">                <span class="keyword">if</span> (Objects.equals(key, e.getKey()) &amp;&amp;</div><div class="line">                    Objects.equals(value, e.getValue()))</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></li>
+</ul>
+</k,v></li>
+</ul>
 
       
     </div>
@@ -323,15 +337,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/11/05/first/" rel="next" title="first blog">
+                <i class="fa fa-chevron-left"></i> first blog
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/06/Map中讲讲HashMap/" rel="prev" title="细谈Map中的HashMap">
-                细谈Map中的HashMap <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -463,7 +477,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hello"><span class="nav-number">1.</span> <span class="nav-text">Hello</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Map中讲讲HashMap"><span class="nav-number">1.</span> <span class="nav-text">Map中讲讲HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HashMap内部结构"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap内部结构</span></a></li></ol></li></ol></div>
             
 
           </div>
