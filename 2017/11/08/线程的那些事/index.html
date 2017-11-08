@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://note.youdao.com/yws/api/personal/file/64901E16383647D9A80F62A53F8A6DF2?method=download&shareKey=403554f59fd8e7709b54ca3077551e88">
 <meta property="og:image" content="http://note.youdao.com/yws/api/personal/file/CC77A0E1BDF34978A14E58974BD5199F?method=download&shareKey=e5e0c31b7650a3e41026c1892eb10a7d">
 <meta property="og:image" content="http://note.youdao.com/yws/api/personal/file/CEF4DA64B0A14B7191EA84CBB5414CBD?method=download&shareKey=6dfe0c0c3f09d879064dddd886317e5b">
-<meta property="og:updated_time" content="2017-11-08T09:20:42.353Z">
+<meta property="og:updated_time" content="2017-11-08T10:30:32.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="线程的那些事">
 <meta name="twitter:description" content="线程的故事多线程的概念 在正常的单线程环境中，程序执行的顺序是按照Main方法依次顺序执行 多线程则是先执行完Main方法之后之后变是子线程的各级执行 执行顺序先主后子  12345678910public static void main(String[] args) &amp;#123;        Thread a=new Thread()&amp;#123;            @Override">
@@ -370,10 +370,6 @@
 <li>顺便很好的说明了多线程并发情况时的问题，不能按正常的执行顺序执行</li>
 <li>因为线程就是一种抢占CPU的操作，CPU有空,就容易被抢，这当时不是我们希望发生的，所以多线程的正式篇由此展开</li>
 </ul>
-<h3 id="看看CountDownLatch与CyclicBarrier的使用和异同"><a href="#看看CountDownLatch与CyclicBarrier的使用和异同" class="headerlink" title="看看CountDownLatch与CyclicBarrier的使用和异同"></a>看看CountDownLatch与CyclicBarrier的使用和异同</h3><ul>
-<li><strong>效果重点</strong> </li>
-<li>CountDownLatch来说，重点是那个“一个线程”,是它在等待，而另外那N的线程在把“某个事情”做完之后可以继续等待，可以终止。而对于CyclicBarrier来说，重点是那N个线程，他们之间任何一个没有完成，所有的线程都必须等待。</li>
-</ul>
 
       
     </div>
@@ -547,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的故事"><span class="nav-number">1.</span> <span class="nav-text">线程的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程的概念"><span class="nav-number">1.1.</span> <span class="nav-text">多线程的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Thread与Runnable"><span class="nav-number">1.2.</span> <span class="nav-text">Thread与Runnable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#看看CountDownLatch与CyclicBarrier的使用和异同"><span class="nav-number">1.2.1.</span> <span class="nav-text">看看CountDownLatch与CyclicBarrier的使用和异同</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#线程的故事"><span class="nav-number">1.</span> <span class="nav-text">线程的故事</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多线程的概念"><span class="nav-number">1.1.</span> <span class="nav-text">多线程的概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Thread与Runnable"><span class="nav-number">1.2.</span> <span class="nav-text">Thread与Runnable</span></a></li></ol></li></ol></div>
             
 
           </div>
